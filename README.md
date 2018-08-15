@@ -14,6 +14,7 @@ The most lightweight, customizable React markdown component.
         -   [options.forceInline](#optionsforceinline)
         -   [options.overrides - Override Any HTML Tag's Representation](#optionsoverrides---override-any-html-tags-representation)
         -   [options.overrides - Rendering Arbitrary React Components](#optionsoverrides---rendering-arbitrary-react-components)
+        -   [options.overrides - Children type](#optionsoverrides---children-type)
         -   [options.createElement - Custom React.createElement behavior](#optionscreateelement---custom-reactcreateelement-behavior)
         -   [options.slugify](#optionsslugify)
     -   [Getting the smallest possible bundle size](#getting-the-smallest-possible-bundle-size)
@@ -306,6 +307,49 @@ render(
             overrides: {
                 DatePicker,
                 DecemberDatePicker,
+            },
+        }}
+    />,
+    document.body
+);
+```
+
+#### options.overrides - Children type
+
+You can specify the option `childrenType`, to indicate the type of children of the element.
+
+This option can take the following values:
+
+- `auto` The type will be guessed automatically (default)
+- `block` Children will be block type
+- `inline` Children will be inline type
+
+Example:
+
+```javascript
+import Markdown from 'markdown-to-jsx';
+import React from 'react';
+import { render } from 'react-dom';
+
+const md = `
+# Hello world
+
+<CustomComp>
+I am a
+
+custom comp
+</CustomComp>
+`;
+
+render(
+    <Markdown
+        children={md}
+        options={{
+            overrides: {
+                CustomComp: {
+                    component: CustomComp,
+                    childrenType: "block", // "inline" or "auto"
+                }
             },
         }}
     />,

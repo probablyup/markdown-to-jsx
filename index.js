@@ -1026,10 +1026,16 @@ export function compiler(markdown, options) {
             match: anyScopeRegex(HTML_BLOCK_ELEMENT_R),
             order: PARSE_PRIORITY_HIGH,
             parse(capture, parse, state) {
+                const tag = capture[1];
                 const trimmed = capture[3].replace(TRIM_HTML, '');
-                const parseFunc = DETECT_BLOCK_SYNTAX.test(trimmed)
-                    ? parseBlock
-                    : parseInline;
+
+                const childrenType = get(options.overrides, `${tag}.childrenType`, "auto");
+
+                let parseFunc = childrenType === "block" ? parseBlock :
+                    childrenType === "inline" ? parseInline : (
+                        DETECT_BLOCK_SYNTAX.test(trimmed)
+                            ? parseBlock
+                            : parseInline);
 
                 const noInnerParse =
                     DO_NOT_PROCESS_HTML_ELEMENTS.indexOf(capture[1]) !== -1;
@@ -1046,7 +1052,7 @@ export function compiler(markdown, options) {
 
                     noInnerParse,
 
-                    tag: capture[1],
+                    tag,
                 };
             },
             react(node, output, state) {
