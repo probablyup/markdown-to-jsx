@@ -2325,6 +2325,24 @@ $25
 `);
   });
 
+  it('regression test for Deep Nesting issue', () => {
+    render(compiler(`<div><div><div><div>test</div></div></div></div>`));
+
+    expect(root.innerHTML).toMatchInlineSnapshot(`
+
+<div data-reactroot>
+<div>
+  <div>
+    <div>
+      test
+    </div>
+  </div>
+</div>
+</div>
+
+`);
+  });
+
   it('regression test for #170', () => {
     render(
       compiler(
