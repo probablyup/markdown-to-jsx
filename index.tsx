@@ -54,6 +54,7 @@ export namespace MarkdownToJSX {
   ) => JSX.Element
 
   export type Rule<ParserOutput = MarkdownToJSX.ParserResult> = {
+    disabled?: boolean,
     match: (
       source: string,
       state: MarkdownToJSX.State,
@@ -94,6 +95,12 @@ export namespace MarkdownToJSX {
       props: React.Props<any>,
       ...children: React.ReactChild[]
     ) => JSX.Element
+
+    /**
+     * Prevent the compiler from taking bare urls and
+     * converting them into <a> tags
+     */
+    disableParsingBareUrls: boolean
 
     /**
      * Disable the compiler's best-effort transcription of provided raw HTML
@@ -651,7 +658,7 @@ function parserFor(
       while (i < ruleList.length) {
         const ruleType = ruleList[i]
         const rule = rules[ruleType]
-        const capture = rule.match(source, state, prevCapture)
+        const capture = !rule.disabled && rule.match(source, state, prevCapture)
 
         if (capture) {
           const currCaptureString = capture[0]
@@ -1308,6 +1315,7 @@ export function compiler(
     },
 
     linkBareUrlDetector: {
+      disabled: options.disableParsingBareUrls,
       match: inlineRegex(LINK_AUTOLINK_BARE_URL_R),
       order: Priority.MAX,
       parse(capture /*, parse, state*/) {
