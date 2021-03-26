@@ -297,6 +297,10 @@ function MyComponent(props) {
 }
 
 const options = {
+    namedCodesToUnicode: {
+        le: '\u2264',
+        ['#39']: '\u0027'
+    },
   overrides: {
     MyComponent: {
       component: MyComponent,

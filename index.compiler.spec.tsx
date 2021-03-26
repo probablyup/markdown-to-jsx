@@ -439,6 +439,21 @@ describe('inline textual elements', () => {
       </span>
     `)
   })
+
+  it('replaces custom named character codes with unicode equivalents so React will render correctly', () => {
+    render(compiler('Apostrophe&#39;s and less than ≤ equal', {
+      namedCodesToUnicode: {
+        le: '\u2264',
+        ['#39']: '\u0027'
+      }
+    }))
+
+    expect(root.innerHTML).toMatchInlineSnapshot(`
+      <span>
+        Apostrophe's and less than ≤ equal
+      </span>
+    `)
+  })
 })
 
 describe('misc block level elements', () => {

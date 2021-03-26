@@ -430,7 +430,8 @@ Some projects require to extend this map of named codes and unicode characters. 
 <Markdown options={{ namedCodesToUnicode: {
     le: '\u2264',
     ge: '\u2265',
-} }}>This text is &le; than this text.</Markdown>;
+    ['#39']: '\u0027'
+    } }}>This text is &le; than this text with apostrophe&#39;s.</Markdown>;
 
 // or
 
