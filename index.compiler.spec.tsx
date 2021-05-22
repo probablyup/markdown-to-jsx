@@ -615,6 +615,52 @@ describe('headings', () => {
       </h1>
     `)
   })
+  
+  it('Heading with link after bullet', () => {
+    render(compiler('- **bullet**\n# [Heading](http://domain.com) \n\n## Test'))
+
+    expect(root.innerHTML).toMatchInlineSnapshot(`
+      <div>
+        <ul>
+          <li>
+            <strong>
+              bullet
+            </strong>
+          </li>
+        </ul>
+        <h1 id="headinghttpdomaincom-">
+          <a href="http://domain.com">
+            Heading
+          </a>
+        </h1>
+        <h2 id="test">
+          Test
+        </h2>
+      </div>
+    `)
+  })
+
+  it('Heading after bullet', () => {
+    render(compiler('- **bullet**\n# Heading \n\n## Test'))
+
+    expect(root.innerHTML).toMatchInlineSnapshot(`
+      <div>
+        <ul>
+          <li>
+            <strong>
+              bullet
+            </strong>
+          </li>
+        </ul>
+        <h1 id="heading-">
+          Heading
+        </h1>
+        <h2 id="test">
+          Test
+        </h2>
+      </div>
+    `)
+  })
 })
 
 describe('images', () => {
