@@ -3251,6 +3251,45 @@ describe('options.slugify', () => {
 })
 
 describe('overrides', () => {
+  it('should substitute the appropriate JSX for components with different names', () => {
+    const One = ({ children }) => <span className="one">{children}</span>
+    const Two = ({ children }) => <span className="two">{children}</span>
+
+    render(
+      compiler(`<One><Two>I am dummy content</Two></One>`, {
+        overrides: { One, Two },
+      })
+    )
+
+    expect(root.innerHTML).toMatchInlineSnapshot(`
+      <span class="one">
+        <span class="two">
+          I am dummy content
+        </span>
+      </span>
+    `)
+  })
+
+  it('should substitute the appropriate JSX for components with the same leading substring in the name', () => {
+    const Test = ({ children }) => <span className="test">{children}</span>
+    const Test1 = ({ children }) => <span className="test1">{children}</span>
+
+    render(
+      compiler('<Test><Test1>I am dummy content</Test1></Test>', {
+        overrides: { Test, Test1 },
+      })
+    )
+
+    expect(root.innerHTML).toMatchInlineSnapshot(`
+      <span class="test">
+        <span class="test1">
+          I am dummy content
+        </span>
+      </span>
+    `)
+  })
+
+
   it('should substitute the appropriate JSX tag if given a component', () => {
     class FakeParagraph extends React.Component {
       render() {
