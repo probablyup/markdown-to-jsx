@@ -540,13 +540,13 @@ The two leading spaces in front of "# Hello" would be left-trimmed from all line
 
 ✅
 
-```md
+````md
 <div>
 ```js
 var some = code();
 ```
 </div>
-```
+````
 
 ## Using The Compiler Directly
 
